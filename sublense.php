@@ -33,12 +33,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Define variable for path to this plugin file.
 define( 'SLF_LOCATION', dirname( __FILE__ ) );
 define( 'SLF_LOCATION_URL' , plugins_url( '', __FILE__ ) );
-define( 'SLF_PLUGIN_URL', plugin_dir_url( __FILE__ )
+define( 'SLF_PLUGIN_URL', plugin_dir_url( __FILE__ );
 
 /**
  *
  */
-class SubmitLenseForm{
+class SubmitLenseForm
+{
 
       public function __construct(){
           // enqueue scripts (js, css)
