@@ -18,11 +18,11 @@ Author URI: https://github.com/Centric-Data
 Text Domain: sublense
 */
 /*
-Contact-Lense Form is free software: you can redistribute it and/or modify it under the terms of GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or any later version.
+Submit-Lense Form is free software: you can redistribute it and/or modify it under the terms of GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or any later version.
 
-Contact-Lense Form is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+Submit-Lense Form is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Contact-Lense Form.
+You should have received a copy of the GNU General Public License along with Submit-Lense Form.
 */
 
 /* Exit if directly accessed */
@@ -51,7 +51,7 @@ class SubmitLenseForm{
       }
 
       /**
-      * Add shortcode to the page
+      * Add shortcode to the page.
       */
       public function slf_load_assets(){
           wp_enqueue_style( 'sublense-css' SLF_PLUGIN_URL . 'css/sublense.css', [], time(), 'all' );
