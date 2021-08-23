@@ -55,8 +55,8 @@ class SubmitLenseForm
       * Add shortcode to the page.
       */
       public function slf_load_assets(){
-          wp_enqueue_style( 'sublense-css' SLF_PLUGIN_URL . 'css/sublense.css', [], time(), 'all' );
-          wp_enqueue_script( 'sublense-js' SLF_PLUGIN_URL . 'js/sublense.js', [ 'jquery' ], time(), 1 );
+          wp_enqueue_style( 'sublense-css', SLF_PLUGIN_URL . 'css/sublense.css', [], time(), 'all' );
+          wp_enqueue_script( 'sublense-js', SLF_PLUGIN_URL . 'js/sublense.js', [ 'jquery' ], time(), 1 );
       }
 
       /**
