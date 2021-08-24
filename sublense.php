@@ -48,6 +48,9 @@ class SubmitLenseForm
           // Call for the shortcode
           add_shortcode( 'sub-lense', array( $this, 'slf_load_shortcode' ) );
 
+          // register post types
+          add_action( 'init', array( $this, 'slf_create_custom_post' ) );
+
 
       }
 
@@ -73,15 +76,21 @@ class SubmitLenseForm
               ?>
             </p>
             <div class="submit__columns">
-                <form>
+                <form id="submit__form">
                   <div class="submit__columns--form">
                     <div class="submit__left">
-                      <input type="text" name="slf-name" id="slf-name">
-                      <input type="email" name="slf-email" id="slf-email">
-                      <input type="text" name="slf-business" id="slf-business">
-                      <textarea name="slf-abstract" id="slf-abstract" cols="30" rows="10"></textarea>
+                      <input type="text" name="slf-name" id="slf-name" value="" placeholder="Fullname" required>
+                      <input type="email" name="slf-email" id="slf-email" value="" placeholder="Email" required>
+                      <input type="text" name="slf-business" id="slf-business" value="" placeholder="Business">
+                      <textarea name="slf-abstract" id="slf-abstract" cols="30" rows="10" value="" placeholder="Message"></textarea>
                     </div>
-                    <div class="submit__right"></div>
+                    <div class="submit__right">
+                        <a id="attach__button">
+                          <span class="material-icons">add_circle</span>
+                        </a>
+                        <label for="slf-fileupload">Upload your file</label>
+                        <input type="file" name="slf-fileupload" id="slf-fileupload">
+                    </div>
                   </div>
                   <div class="submit__columns--button">
                     <button id="submit_userform">Submit Form</button>
@@ -91,6 +100,34 @@ class SubmitLenseForm
           </div>
         </section>
         <?php
+      }
+
+      /**
+      * Register Submissions custom-post-type
+      */
+      public function slf_create_custom_post(){
+        $args = array(
+          'public'                =>  true,
+          'has_archive'           =>  true,
+          'hierarchical'          =>  false,
+          'supports'              =>  array('title','editor','author'),
+          'exclude_from_search'   =>  true,
+          'publicly_queryable'    =>  false,
+          'capability_type'       =>  'post',
+          'labels'                =>  array(
+            'name'                => __( 'Submissions', 'sublense' ),
+            'singular_name'       => __( 'Submission', 'sublense' ),
+            'menu_name'           => _x( 'Submissions', 'Admin Menu text', 'sublense' ),
+            'add_new'             => __( 'Add New', 'sublense' ),
+            'add_new_item'        => __( 'Add New Submission', 'sublense' ),
+            'new_item'            => __( 'New Submission', 'sublense' ),
+            'edit_item'           => __( 'Edit Submission', 'sublense' ),
+            'view_item'           => __( 'View Submission', 'sublense' ),
+            'all_items'           => __( 'All Submissions', 'sublense' )
+          ),
+          'menu_icon'       =>  'dashicons-pdf',
+        );
+        register_post_type( 'centric_submissions', $args );
       }
 
 
