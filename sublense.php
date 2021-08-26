@@ -51,7 +51,14 @@ class SubmitLenseForm
           // register post types
           add_action( 'init', array( $this, 'slf_create_custom_post' ) );
 
+          // REST Route
+          // add_filter( 'rest_route_for_post', array( $this, 'slf_rest_route_for_cpt' ), 10, 2 );
 
+          // Register route
+          add_action( 'rest_api_init', array( $this, 'slf_register_submission_route' ) );
+
+          // Load Javascript
+          add_action( 'wp_footer', array( $this, 'slf_load_scripts' ) );
       }
 
       /**
@@ -60,6 +67,8 @@ class SubmitLenseForm
       public function slf_load_assets(){
           wp_enqueue_style( 'sublense-css', SLF_PLUGIN_URL . 'css/sublense.css', [], time(), 'all' );
           wp_enqueue_script( 'sublense-js', SLF_PLUGIN_URL . 'js/sublense.js', [ 'jquery' ], time(), 1 );
+
+          wp_localize_script( 'sublense-js', 'veriData', array( 'nonce' =>  wp_create_nonce( 'wp_rest' ) ) );
       }
 
       /**
@@ -80,7 +89,7 @@ class SubmitLenseForm
                   <div class="submit__columns--form">
                     <div class="submit__left">
                       <input type="text" name="slf-name" id="slf-name" value="" placeholder="Fullname" required>
-                      <input type="email" name="slf-email" id="slf-email" value="" placeholder="Email" required>
+                      <input type="email" name="slf-email" id="slf-email" value="" placeholder="Email">
                       <input type="text" name="slf-business" id="slf-business" value="" placeholder="Business">
                       <textarea name="slf-abstract" id="slf-abstract" cols="30" rows="10" value="" placeholder="Message"></textarea>
                     </div>
@@ -89,13 +98,16 @@ class SubmitLenseForm
                           <span class="material-icons">add_circle</span>
                         </a>
                         <label for="slf-fileupload">Upload your file</label>
-                        <input type="file" name="slf-fileupload" id="slf-fileupload">
+                        <input type="file" name="slf-fileupload" id="slf-fileupload" value="">
                     </div>
                   </div>
                   <div class="submit__columns--button">
-                    <button id="submit_userform">Submit Form</button>
+                    <button type="submit" id="submit_userform">Submit Form</button>
                   </div>
                 </form>
+            </div>
+            <button id="loadcontent">Load Content</button>
+            <div class="hello">
             </div>
           </div>
         </section>
@@ -106,30 +118,107 @@ class SubmitLenseForm
       * Register Submissions custom-post-type
       */
       public function slf_create_custom_post(){
+        $labels = array(
+          'name'                => __( 'Submissions', 'sublense' ),
+          'singular_name'       => __( 'Submission', 'sublense' ),
+          'menu_name'           => _x( 'Submissions', 'Admin Menu text', 'sublense' ),
+          'add_new'             => __( 'Add New', 'sublense' ),
+          'add_new_item'        => __( 'Add New Submission', 'sublense' ),
+          'new_item'            => __( 'New Submission', 'sublense' ),
+          'edit_item'           => __( 'Edit Submission', 'sublense' ),
+          'view_item'           => __( 'View Submission', 'sublense' ),
+          'all_items'           => __( 'All Submissions', 'sublense' )
+        );
         $args = array(
+          'labels'                =>  $labels,
           'public'                =>  true,
           'has_archive'           =>  true,
           'hierarchical'          =>  false,
+          'show_in_rest'          =>  true,
           'supports'              =>  array('title','editor','author'),
           'exclude_from_search'   =>  true,
           'publicly_queryable'    =>  false,
           'capability_type'       =>  'post',
-          'labels'                =>  array(
-            'name'                => __( 'Submissions', 'sublense' ),
-            'singular_name'       => __( 'Submission', 'sublense' ),
-            'menu_name'           => _x( 'Submissions', 'Admin Menu text', 'sublense' ),
-            'add_new'             => __( 'Add New', 'sublense' ),
-            'add_new_item'        => __( 'Add New Submission', 'sublense' ),
-            'new_item'            => __( 'New Submission', 'sublense' ),
-            'edit_item'           => __( 'Edit Submission', 'sublense' ),
-            'view_item'           => __( 'View Submission', 'sublense' ),
-            'all_items'           => __( 'All Submissions', 'sublense' )
-          ),
           'menu_icon'       =>  'dashicons-pdf',
         );
         register_post_type( 'centric_submissions', $args );
       }
 
+
+      public function slf_register_submission_route(){
+        register_rest_route( 'wp/v2', 'submissions', array(
+          'methods' =>  'POST',
+          'callback'  =>  array( $this, 'slf_handle_submissions' ),
+        ) );
+      }
+
+      // Run Script on Submit
+      public function slf_load_scripts(){
+        ?>
+
+        <script>
+
+        let slfnonce = '<?php echo wp_create_nonce('slfwp_rest'); ?>';
+
+            ( function($){
+              $('#submit__form').on('submit', function( e ) {
+                e.preventDefault();
+
+                var form = $( this ).serialize();
+                console.log( form );
+
+                $.ajax({
+                  method: 'post',
+                  url: '<?php echo get_rest_url( null, 'wp/v2/submissions' ); ?>',
+                  headers: { 'WP-X-Nonce': slfnonce },
+                  data: form
+                })
+              });
+            } )(jQuery)
+
+        </script>
+
+        <?php
+      }
+
+      public function slf_handle_submissions( $data ){
+        $headers = $data->get_headers();
+        $params = $data->get_params();
+
+        $nonce = $headers[ 'x_wp_nonce' ];
+
+        //  Verify Nonce
+        if ( ! wp_verify_nonce( $nonce, 'slfwp_rest' ) ){
+          return new WP_REST_Response( 'Message not sent', 422 );
+        }
+
+        $post_id = wp_insert_post( [
+            'post_type' => 'centric_submissions',
+            'post_title' => wp_strip_all_tags( $params['slf-name'] ),
+            'post_content'  =>  wp_strip_all_tags( $params['slf-abstract'] ),
+            'post_status' => 'publish'
+          ] );
+
+          // add_post_meta( $post_id, '_clf_email_meta_key', $params['email'] );
+          // add_post_meta( $post_id, '_clf_phone_meta_key', $params['phone'] );
+          // Message success message
+          if ( $post_id )
+          {
+            return new WP_REST_Response( $params['slf-name'], 200 );
+
+          }
+      }
+
+      /**
+      * Register a rest route for custom post type
+      */
+      // public function slf_rest_route_for_cpt( $route, $post ){
+      //   if( $post->post_type === 'centric_submissions' ){
+      //     $route = '/wp/v2/submissions/' . $post->ID;
+      //   }
+      //
+      //   return $route;
+      // }
 
 }
 
