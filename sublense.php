@@ -59,6 +59,11 @@ class SubmitLenseForm
 
           // Load Javascript
           add_action( 'wp_footer', array( $this, 'slf_load_scripts' ) );
+
+          // Custom columns
+          add_filter( 'manage_centric_submissions_posts_columns', array( $this, 'slf_submission_columns' ) );
+
+          add_action( 'manage_centric_submissions_posts_custom_column', array( $this, 'slf_submission_columns_data' ), 10, 2 );
       }
 
       /**
@@ -78,7 +83,6 @@ class SubmitLenseForm
         ?>
         <section>
           <div class="submit__page lense-row">
-            <h3>Submission Form</h3>
             <p>
               <?php
                 echo esc_html__( 'Abstracts should be in English, with a maximum of 250 words. Please use single spacing and Times New Roman, font size 12. Abstracts of research papers should provide a brief description of research objectives, methodology, theory and summary of results and/or conclusions. Please do not include any charts, bibliographies or footnotes.', 'lands' );
@@ -88,17 +92,48 @@ class SubmitLenseForm
                 <form id="submit__form">
                   <div class="submit__columns--form">
                     <div class="submit__left">
+                      <select id="slf-form-type" name="slf-form-type">
+                        <option value="audit-form">Audit Form</option>
+                        <option value="lease-form">Lease Form</option>
+                        <option value="dispute-form">Dispute Form</option>
+                        <option value="death-notice">Application to Note Death</option>
+                        <option value="deposit-for-division">Deposit of a Plan of Division</option>
+                        <option value="amendment-strata-plan">Amendment of a Strata Plan</option>
+                        <option value="cancel-strata-plan">Cancellation of a Strata Plan</option>
+                      </select>
                       <input type="text" name="slf-name" id="slf-name" value="" placeholder="Fullname" required>
                       <input type="email" name="slf-email" id="slf-email" value="" placeholder="Email">
                       <input type="text" name="slf-business" id="slf-business" value="" placeholder="Business">
                       <textarea name="slf-abstract" id="slf-abstract" cols="30" rows="10" value="" placeholder="Message"></textarea>
+                      <input type="file" name="slf-fileupload" id="slf-fileupload" value="">
                     </div>
                     <div class="submit__right">
-                        <a id="attach__button">
-                          <span class="material-icons">add_circle</span>
-                        </a>
-                        <label for="slf-fileupload">Upload your file</label>
-                        <input type="file" name="slf-fileupload" id="slf-fileupload" value="">
+                        <h4>Submit</h4>
+                        <h3>Submitting your Form</h3>
+                        <p>You can easily upload your form easily for processing. This is the easier way than to have a walk-through. You can submit these kinds of forms:</p>
+                        <ul class="submit__right--items">
+                          <li>
+                            <span class="material-icons">file_present</span><h5>Audit Form</h5>
+                          </li>
+                          <li>
+                            <span class="material-icons">file_present</span><h5>Lease Form</h5>
+                          </li>
+                          <li>
+                            <span class="material-icons">file_present</span><h5>Dispute Form</h5>
+                          </li>
+                          <li>
+                            <span class="material-icons">file_present</span><h5>Application to Note Death</h5>
+                          </li>
+                          <li>
+                            <span class="material-icons">file_present</span><h5>Deposit of a Plan of Division</h5>
+                          </li>
+                          <li>
+                            <span class="material-icons">file_present</span><h5>Amendment of a Strata Plan</h5>
+                          </li>
+                          <li>
+                            <span class="material-icons">file_present</span><h5>Cancellation of a Strata Plan</h5>
+                          </li>
+                        </ul>
                     </div>
                   </div>
                   <div class="submit__columns--button">
@@ -106,9 +141,9 @@ class SubmitLenseForm
                   </div>
                 </form>
             </div>
-            <button id="loadcontent">Load Content</button>
+            <!-- <button id="loadcontent">Load Content</button>
             <div class="hello">
-            </div>
+            </div> -->
           </div>
         </section>
         <?php
@@ -220,6 +255,49 @@ class SubmitLenseForm
       //   return $route;
       // }
 
+
+      /**
+      * Creating custom columns
+      */
+      public function slf_submission_columns( $columns ){
+
+        $newColumns = array();
+          $newColumns['title'] = 'Form Title';
+          $newColumns['fullname'] = 'Fullname';
+          $newColumns['email'] = 'Email';
+          $newColumns['business'] = 'Business';
+          $newColumns['message'] = 'Message Excerpt';
+          $newColumns['form'] = 'Form';
+          $newColumns['date'] = 'Date';
+
+          return $newColumns;
+      }
+
+      /**
+      * Creating custom columns
+      */
+      public function slf_submission_columns_data( $column, $post_id ){
+        switch ( $column ) {
+          case 'fullname':
+            echo 'User';
+            break;
+          case 'email':
+            echo 'Submission Email';
+            break;
+          case 'business':
+            echo 'Submission Business';
+            break;
+          case 'message':
+            echo get_the_excerpt();
+            break;
+          case 'form':
+            echo get_the_title();
+            break;
+          default:
+            // code...
+            break;
+        }
+      }
 }
 
 new SubmitLenseForm;

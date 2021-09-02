@@ -1,46 +1,37 @@
 console.log( 'Submit-Form Plugin loaded' );
 
-const homeUrl = window.location.origin;
-const fileURL = homeUrl + '/wp-json/wp/v2/documents';
-
-const attachBtn = document.querySelector('#attach__button');
-const fileUploadBtn = document.querySelector('#slf-fileupload');
-
-const loadContentBtn = document.querySelector('#loadcontent');
-const divContent = document.querySelector('.hello');
-
-attachBtn.addEventListener( 'click', (e) => {
-  e.preventDefault;
-  console.log('Locate file');
-
-  setTimeout( () => {
-    fileUploadBtn.click();
-  }, 200 );
-} );
-
-// load content on submission page
-loadContentBtn.addEventListener( 'click', () => {
-  const xhttp = new XMLHttpRequest();
-
-  xhttp.open('GET', fileURL, true);
-  xhttp.onload = () => {
-    let data = JSON.parse(xhttp.responseText);
-    createHTML(data);
-    loadContentBtn.remove();
-  }
-  xhttp.send();
-} );
-
-// Create html
-function createHTML( postsData ){
-  let htmlString = '';
-  for (var i = 0; i < postsData.length; i++) {
-    htmlString += '<h4>' + postsData[i].title.rendered + '</h4>';
-    htmlString +=  postsData[i].content.rendered;
-  }
-
-  divContent.innerHTML = htmlString;
-}
+// const homeUrl = window.location.origin;
+// const fileURL = homeUrl + '/wp-json/wp/v2/documents';
+//
+// const fileUploadBtn = document.querySelector('#slf-fileupload');
+//
+// const loadContentBtn = document.querySelector('#loadcontent');
+// const divContent = document.querySelector('.hello');
+//
+//
+// // load content on submission page
+// loadContentBtn.addEventListener( 'click', () => {
+//   const xhttp = new XMLHttpRequest();
+//
+//   xhttp.open('GET', fileURL, true);
+//   xhttp.onload = () => {
+//     let data = JSON.parse(xhttp.responseText);
+//     createHTML(data);
+//     loadContentBtn.remove();
+//   }
+//   xhttp.send();
+// } );
+//
+// // Create html
+// function createHTML( postsData ){
+//   let htmlString = '';
+//   for (var i = 0; i < postsData.length; i++) {
+//     htmlString += '<h4>' + postsData[i].title.rendered + '</h4>';
+//     htmlString +=  postsData[i].content.rendered;
+//   }
+//
+//   divContent.innerHTML = htmlString;
+// }
 
 
 

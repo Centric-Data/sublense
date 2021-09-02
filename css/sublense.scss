@@ -17,6 +17,7 @@
     &--form{
       display: flex;
       justify-content: space-between;
+      gap: 2em;
     }
     &--button{
       display: flex;
@@ -34,7 +35,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 800px;
+    max-width: 575px;
     input, textarea{
       margin-bottom: 1em;
       padding: .5em;
@@ -42,18 +43,54 @@
       border: none;
       outline: none;
     }
+    #slf-form-type{
+      height: 50px;
+      margin-bottom: .5em;
+      border: none;
+      outline: none;
+      background-color: var(--textColor);
+      color: #fff;
+      padding: .5em;
+      option{
+        height: 50px;
+      }
+    }
   }
   &__right{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    span{
-      font-size: 10em;
-      margin-bottom: .2em;
-      cursor: pointer;
+    h3{}
+    h4{
+      font-weight: 400;
+      font-size: .8em;
+      color: grey;
+    }
+    p{
+      font-size: .8em;
+      color: grey;
+      line-height: 1.9;
     }
     #slf-fileupload{
 
+    }
+    &--items{
+      li{
+        display: flex;
+        align-items: center;
+        gap: 2em;
+        span{
+          font-size: 1.5em;
+          background-color: var(--textColor);
+          padding: .2em;
+          color: #fff;
+          border-radius: 50px;
+          margin-bottom: .2em;
+        }
+        h5{
+          font-weight: 400;
+          font-size: 1em;
+        }
+      }
     }
   }
 }
@@ -62,7 +99,7 @@
   border: none;
   outline: none;
   padding: 1em 5em;
-  background-color: #000;
+  background-color: var(--textColor);
   border-radius: 5px;
   color: #fff;
 }
