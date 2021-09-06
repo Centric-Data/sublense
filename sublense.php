@@ -63,6 +63,7 @@ class SubmitLenseForm
           // Custom columns
           add_filter( 'manage_centric_submissions_posts_columns', array( $this, 'slf_submission_columns' ) );
 
+          // Custom columns post data
           add_action( 'manage_centric_submissions_posts_custom_column', array( $this, 'slf_submission_columns_data' ), 10, 2 );
       }
 
