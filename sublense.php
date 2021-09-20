@@ -108,25 +108,7 @@ class SubmitLenseForm
                         <p>You can easily upload your form easily for processing. This is the easier way than to have a walk-through. You can submit these kinds of forms:</p>
                         <ul class="submit__right--items">
                           <li>
-                            <span class="material-icons">file_present</span><h5>Audit Form</h5>
-                          </li>
-                          <li>
-                            <span class="material-icons">file_present</span><h5>Lease Form</h5>
-                          </li>
-                          <li>
-                            <span class="material-icons">file_present</span><h5>Dispute Form</h5>
-                          </li>
-                          <li>
-                            <span class="material-icons">file_present</span><h5>Application to Note Death</h5>
-                          </li>
-                          <li>
-                            <span class="material-icons">file_present</span><h5>Deposit of a Plan of Division</h5>
-                          </li>
-                          <li>
-                            <span class="material-icons">file_present</span><h5>Amendment of a Strata Plan</h5>
-                          </li>
-                          <li>
-                            <span class="material-icons">file_present</span><h5>Cancellation of a Strata Plan</h5>
+                            <span class="material-icons">file_present</span><h5>Dispute Registration Form</h5>
                           </li>
                         </ul>
                     </div>
