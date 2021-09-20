@@ -86,7 +86,7 @@ class SubmitLenseForm
           <div class="submit__page lense-row">
             <p>
               <?php
-                echo esc_html__( 'Abstracts should be in English, with a maximum of 250 words. Please use single spacing and Times New Roman, font size 12. Abstracts of research papers should provide a brief description of research objectives, methodology, theory and summary of results and/or conclusions. Please do not include any charts, bibliographies or footnotes.', 'lands' );
+                echo esc_html__( 'Kindly submit the following forms here.', 'lands' );
               ?>
             </p>
             <div class="submit__columns">
@@ -94,13 +94,7 @@ class SubmitLenseForm
                   <div class="submit__columns--form">
                     <div class="submit__left">
                       <select id="slf-form-type" name="slf-form-type">
-                        <option value="audit-form">Audit Form</option>
-                        <option value="lease-form">Lease Form</option>
-                        <option value="dispute-form">Dispute Form</option>
-                        <option value="death-notice">Application to Note Death</option>
-                        <option value="deposit-for-division">Deposit of a Plan of Division</option>
-                        <option value="amendment-strata-plan">Amendment of a Strata Plan</option>
-                        <option value="cancel-strata-plan">Cancellation of a Strata Plan</option>
+                        <option value="audit-form">Dispute Registration Form</option>
                       </select>
                       <input type="text" name="slf-name" id="slf-name" value="" placeholder="Fullname" required>
                       <input type="email" name="slf-email" id="slf-email" value="" placeholder="Email">
