@@ -86,7 +86,7 @@ class SubmitLenseForm
           <div class="submit__page lense-row">
             <p>
               <?php
-                echo esc_html__( 'Kindly submit the following forms here.', 'lands' );
+                echo esc_html__( 'Kindly submit the following forms here for processing.', 'lands' );
               ?>
             </p>
             <div class="submit__columns">
